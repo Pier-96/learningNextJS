@@ -19,6 +19,7 @@ const links = [
   { name: 'Adri', href: '/dashboard/adrilove', icon: CameraIcon },
   { name: 'Cris', href: '/dashboard/crislove', icon: BellIcon},
   { name: 'Andrea', href: '/dashboard/andrealove', icon: CubeIcon },
+  { name: 'Diego', href: '/dashboard/diegolove', icon: UserGroupIcon },
 ];
 
 export default function NavLinks() {
