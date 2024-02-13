@@ -1,5 +1,4 @@
 import { sql } from '@vercel/postgres';
-import { unstable_noStore as noStore } from 'next/cache';
 
 // .
 import {
@@ -27,7 +26,6 @@ export async function fetchRevenue() {
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 
     console.log('Data fetch complete after 3 seconds.');
-    noStore();
     return data.rows;
   } catch (error) {
     console.error('Database Error:', error);
@@ -48,7 +46,6 @@ export async function fetchLatestInvoices() {
       ...invoice,
       amount: formatCurrency(invoice.amount),
     }));
-    noStore();
     return latestInvoices;
   } catch (error) {
     console.error('Database Error:', error);
@@ -78,7 +75,6 @@ export async function fetchCardData() {
     const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
     const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
     const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
-    noStore();
     return {
       numberOfCustomers,
       numberOfInvoices,
@@ -120,7 +116,6 @@ export async function fetchFilteredInvoices(
       ORDER BY invoices.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
-    noStore();
     return invoices.rows;
   } catch (error) {
     console.error('Database Error:', error);
@@ -142,7 +137,6 @@ export async function fetchInvoicesPages(query: string) {
   `;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
-    noStore();
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
@@ -167,7 +161,6 @@ export async function fetchInvoiceById(id: string) {
       // Convert amount from cents to dollars
       amount: invoice.amount / 100,
     }));
-    noStore();
     return invoice[0];
   } catch (error) {
     console.error('Database Error:', error);
